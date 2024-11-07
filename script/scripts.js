@@ -65,6 +65,31 @@ workerIene.addEventListener("message", event => {
 
 
 
+const graficoEuro = document.getElementById('graficoEuro')
+
+const graficoParaEuro = new Chart(graficoEuro, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Euro',
+            data: [],
+            borderWidth: 1
+        }]
+    }
+})
+
+let workerEuro = new Worker('./script/workers/workerEuro.js')
+workerEuro.postMessage('euro')
+
+workerEuro.addEventListener("message", event => {
+    let tempo = geraHorario()
+    let valor = event.data.ask
+    adicionarDados(graficoParaEuro, tempo, valor)
+    selecionaCotacao("euro", valor)
+})
+
+
 
 
 
